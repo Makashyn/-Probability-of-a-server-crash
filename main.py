@@ -10,6 +10,7 @@ for i in range(1,51):
 
 
 class Server:
+	"""Клас сервер, конструктор принимает количество серверов"""
 	count = 0
 	startMirror = -4
 	endMirror = 1
@@ -31,12 +32,14 @@ class Server:
 		print(self.shards)
 	
 	def generateRandom( self):
-		listTemp = []
+		"""функция генерирует рандомное размещение данных в первом случае"""
+		listTemp = [] 
 		for i in range(0, 10):	
 			listTemp.append(self.checkForOb())
 		return listTemp	
 
 	def generateMirror(self):
+		"""функция генерирует размещение данных во втором случае"""
 		listTemp = []
 		if Server.count == 0:
 			Server.startMirror += 5
@@ -46,6 +49,7 @@ class Server:
 		return listTemp	
 
 	def checkForOb(self):
+		"""функция проверяет данные на сходство и берет рандомный данные для первого случая"""
 		while True:
 			if len(listWithNumbers) == 1:
 				number = listWithNumbers[0]
@@ -56,6 +60,7 @@ class Server:
 				return number	
 
 	def crashed(self):
+		"""Функция для падения сервера"""
 		self.__work = not self.__work
 
 
@@ -66,14 +71,14 @@ if __name__ == '__main__':
 		serverList.append(Server(i))
 	firstCrashed = 0;
 	serverList[0].crashed()
-	ind = 0
+	count = 0
 	for i in range(0, countServers):
 		if firstCrashed == i:
 			continue
 		serverList[i].crashed()
 		for j in range(0, len( serverList[firstCrashed].shards )):
 			if serverList[firstCrashed].shards[j] in serverList[i].shards:
-				ind += 1 	 
+				count += 1 	 
 				break
-	
-	print("Killing 2 arbitrary servers results in data loss in {}% cases".format(round(ind / (countServers - 1), 2))) 	
+		serverList[i].crashed()
+	print("Killing 2 arbitrary servers results in data loss in {}% cases".format(round(count / (countServers - 1) * 100, 2))) 	
